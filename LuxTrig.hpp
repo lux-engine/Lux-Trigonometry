@@ -1,9 +1,3 @@
-#include <chrono>
-#include <string>
-#include <iostream>
-
-constexpr bool Stub = false;
-
 namespace Lux
 {
     using f32 = float;
@@ -53,25 +47,3 @@ namespace Lux
         }
     }
 }
-
-Lux::f32 f = 0.0008f, ff = 0.f;
-const int Repetitions = 1000000;
-
-inline void Dumb()
-{
-    for(int i = 0; i < Repetitions; ++i)
-        ff += std::cos(f + static_cast<Lux::f32>(i));
-}
-
-[[nodiscard]] inline const std::chrono::steady_clock::time_point Point() noexcept
-{
-    return std::chrono::steady_clock::now();
-}
-
-[[nodiscard]] inline const std::string TimeDiff(const std::chrono::steady_clock::time_point& a, const std::chrono::steady_clock::time_point& b) noexcept
-{
-	return std::to_string(std::chrono::duration_cast<std::chrono::nanoseconds>(b - a).count() / Repetitions) + " nanoseconds";
-}
-
-#define InitBenchmark {auto a = Point();for(int i = 0; i < Repetitions; ++i){if constexpr(Stub)
-#define EndBenchmark(x)}auto b = Point();std::cout << "\n\n" << #x << ": " << TimeDiff(a, b);}if constexpr(Stub)
